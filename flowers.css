@@ -1111,68 +1111,62 @@ body {
 #stars { z-index: 1; pointer-events: none; }
 .flowers { position: relative; z-index: 2; overflow: visible; }
 #toggleAudio { z-index: 9999; pointer-events: auto; }
+/* ====== GLOBAL: usa viewport visual real (evita empujes por barra) ====== */
+.night { position: fixed; inset: 0; }
+#stars  { position: fixed; top: 0; left: 0; transform: none; }
+
+@supports (height: 100dvh) {
+  #stars { width: 100dvw; height: 100dvh; }
+  .night { width: 100dvw; height: 100dvh; }
+}
+
+@supports not (height: 100dvh) {
+  #stars { width: 100svw; height: 100svh; }
+  .night { width: 100svw; height: 100svh; }
+}
+
+/* mantener el botón sobre la safe-area en general */
+#toggleAudio {
+  position: fixed;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 9999;
+}
 
 /* =========================
    SOLO MÓVIL (<= 600px)
    ========================= */
 @media (max-width: 600px) {
-  /* 1) Viewport real y sin scroll */
   html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;               /* quita scroll vertical y horizontal */
+    overflow: hidden;
     -webkit-text-size-adjust: 100%;
   }
 
-  /* 2) Fondo y estrellas ajustados al viewport visual (sin barras) */
-  .night {
-    position: fixed;
-    inset: 0;
-  }
-  #stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: none;                /* quitamos el translateX(-50%) */
-    width: 100svw;                  /* small viewport units = móvil real */
-    height: 100svh;
-  }
+  /* ya están fijos y dimensionados arriba; aquí no repetimos transform */
+  #stars { transform: none; }
 
-  /* 3) Escala y “piso” de las flores para que no se corten */
-  :root {
-    --flowers-scale: 0.48;          /* ajusta 0.44–0.52 si hace falta */
-  }
-  .flower { bottom: 8vmin; }        /* antes 10vmin */
-  .flower__grass { bottom: 10vmin; }/* antes 12vmin */
-  .long-g--6 { bottom: -18vmin; }   /* un poco menos negativo para no cortar */
+  :root { --flowers-scale: 0.48; }     /* ajusta 0.44–0.52 si hace falta */
+  .flower { bottom: 8vmin; }
+  .flower__grass { bottom: 10vmin; }
+  .long-g--6 { bottom: -18vmin; }
 
-  /* 4) Botón de música: visible sobre safe-area (iOS/Android) */
-  #toggleAudio {
-    position: fixed;
-    right: 20px;
-    bottom: calc(20px + env(safe-area-inset-bottom));
-    /* “contain” evita que sombras/filtros generen overflow de pintura */
-    contain: layout paint;
-  }
+  /* botón visible sobre safe-area (sin duplicar reglas) */
+  #toggleAudio { contain: layout paint; }
 
-  /* 5) Evitar que animaciones creen scroll vertical:
-        - Sustituimos 120vh/-10vh por 100svh/-8svh
-        - O reajustamos la distancia via variables */
+  /* Evitar desborde vertical de animaciones */
   .shooting-star {
-    top: -8svh;          /* antes -10vh */
-    /* forzamos la distancia al alto visible del viewport */
-    --dist: 100svh;      /* antes 120vh */
+    top: -8svh;      /* antes -10vh */
+    --dist: 100svh;  /* antes 120vh */
   }
 
-  /* Re-define keyframes con límites al viewport visual */
   @keyframes fall {
-    from { transform: translateY(0);     opacity: .9; }
-    to   { transform: translateY(100svh); opacity: 0; }  /* antes 120vh */
+    from { transform: translateY(0); opacity: .9; }
+    to   { transform: translateY(100svh); opacity: 0; }
   }
 
-  /* Nota: el keyframe original usa var(--angle) + var(--dist).
-     Aquí solo nos aseguramos de que la Y no supere el viewport. */
   @keyframes shoot {
     0%   { transform: rotate(var(--angle)) translateY(-8svh); opacity: 0; }
     10%  { opacity: 1; }
@@ -1182,20 +1176,19 @@ body {
     100% { transform: rotate(var(--angle)) translateY(100svh); opacity: 0; }
   }
 
-  /* Seguridad extra: evita “micro-scroll” horizontal en algunos Android viejos */
-  html { overflow-x: clip; }
+  html { overflow-x: clip; } /* micro-scroll horizontal */
 }
 
 /* =========================
-   MOVIL MUY ANGOSTO (<= 400px)
+   MUY ANGOSTO (<= 400px)
    ========================= */
 @media (max-width: 400px) {
-  :root { --flowers-scale: 0.44; }  /* un poco menos para pantallas mini */
+  :root { --flowers-scale: 0.44; }
   .flower { bottom: 7vmin; }
   .flower__grass { bottom: 9vmin; }
-  /* Botón un pelín más arriba si hay notch grande */
   #toggleAudio { bottom: calc(24px + env(safe-area-inset-bottom)); }
 }
+
 
 
 
