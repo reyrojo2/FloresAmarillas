@@ -1106,26 +1106,35 @@ body {
   animation-play-state: paused !important;
 }
 
-/* ====== usar SIEMPRE el alto/ancho visible reales ====== */
-:root {
-  --flowers-scale: 0.48;            /* ajústalo si hace falta */
-  --vh: 1vh; --vw: 1vw;             /* fallback */
-}
+/* ===== Fondo/estrellas: ignoran la barra (no se encogen/estiran) ===== */
 .night,
 #stars {
   position: fixed;
-  top: var(--vvy, 0);
-  left: var(--vvx, 0);
-  width: calc(var(--vvw, 1vw) * 100);
-  height: calc(var(--vvh, 1vh) * 100);
+  top: 0; left: 0;
+  width: 100lvw;   /* largest viewport width  -> ignora barra */
+  height: 100lvh;  /* largest viewport height -> ignora barra */
   transform: none;
+  pointer-events: none;
+  z-index: 0; /* fondo */
 }
 
-.message {
-  padding-top: env(safe-area-inset-top);
+/* ===== Layout de contenido: usa el área visible real ===== */
+html, body { height: 100%; margin: 0; }
+body {
+  min-height: 100dvh;      /* alto visible real (con barra) */
+  overflow: hidden;        /* sin scroll vertical */
+  display: flex;
+  align-items: flex-end;   /* ya lo tenías */
+  justify-content: center; /* ya lo tenías */
+  background: #000;        /* por si hubiera 1px de gap en algún Android */
 }
 
-/* Botón fuera de la zona de la barra inferior */
+/* Mensaje: respeta la barra superior (notch) */
+.message { 
+  margin-top: env(safe-area-inset-top);
+}
+
+/* Botón de música: siempre sobre la barra inferior */
 #toggleAudio {
   position: fixed;
   right: 20px;
@@ -1133,42 +1142,37 @@ body {
   z-index: 9999;
 }
 
-/* Ajustes móviles (domar overflow sin cortar contenido) */
-@media (max-width: 600px) {
-  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+/* Flores: usa el área visible + safe-area para que no se corten */
+:root { --flowers-scale: 0.48; } /* ajusta 0.44–0.52 si quieres */
+.flower       { bottom: calc(8vmin + env(safe-area-inset-bottom)); }
+.flower__grass{ bottom: calc(10vmin + env(safe-area-inset-bottom)); }
+.long-g--6    { bottom: -18vmin; } /* pequeño ajuste tuyo */
 
-  /* Piso un poco más alto y escala ligera para evitar cortes */
-  .flower { bottom: 8vmin; }
-  .flower__grass { bottom: 10vmin; }
-  .long-g--6 { bottom: -18vmin; }
-
-  /* Animaciones limitadas al viewport visible real */
-  .shooting-star {
-    top: calc(var(--vvh, var(--vh)) * -0.08); /* ~-8vh real */
-    --dist: calc(var(--vvh, var(--vh)) * 100);
-  }
-  @keyframes fall {
-    from { transform: translateY(0);     opacity: .9; }
-    to   { transform: translateY(calc(var(--vvh, var(--vh)) * 100)); opacity: 0; }
-  }
-  @keyframes shoot {
-    0%   { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * -0.08)); opacity: 0; }
-    10%  { opacity: 1; }
-    25%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 25)); }
-    50%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 50)); }
-    75%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 75)); }
-    100% { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 100)); opacity: 0; }
-  }
-
-  /* micro-scroll horizontal en algunos Android */
-  html { overflow-x: clip; }
+/* Animaciones: limitadas al alto visible para que no creen scroll */
+.shooting-star {
+  top: -8dvh;              /* antes -10vh */
+  --dist: 100dvh;          /* antes 120vh */
 }
 
-/* muy angosto */
+@keyframes fall {
+  from { transform: translateY(0);      opacity: .9; }
+  to   { transform: translateY(100dvh); opacity: 0; }
+}
+
+@keyframes shoot {
+  0%   { transform: rotate(var(--angle)) translateY(-8dvh); opacity: 0; }
+  10%  { opacity: 1; }
+  25%  { transform: rotate(var(--angle)) translateY(calc(100dvh * .25)) translateX(calc(var(--drift) * 8px)); }
+  50%  { transform: rotate(var(--angle)) translateY(calc(100dvh * .5))  translateX(calc(var(--drift) * -4px)); }
+  75%  { transform: rotate(var(--angle)) translateY(calc(100dvh * .75)) translateX(calc(var(--drift) * 12px)); }
+  100% { transform: rotate(var(--angle)) translateY(100dvh); opacity: 0; }
+}
+
+/* Refuerzos móviles */
 @media (max-width: 400px) {
   :root { --flowers-scale: 0.44; }
-  .flower { bottom: 7vmin; }
-  .flower__grass { bottom: 9vmin; }
+  .flower { bottom: calc(7vmin + env(safe-area-inset-bottom)); }
+  .flower__grass { bottom: calc(9vmin + env(safe-area-inset-bottom)); }
   #toggleAudio { bottom: calc(24px + env(safe-area-inset-bottom)); }
 }
 
