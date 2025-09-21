@@ -1106,70 +1106,60 @@ body {
   animation-play-state: paused !important;
 }
 
-/* ==== FIX 1: Viewport real en móvil (evita barras) ==== */
+/* --- Restablece capas: fondo detrás, flores delante --- */
+.night { z-index: 0; }
+#stars { z-index: 1; }
+.flowers { position: relative; z-index: 2; } /* asegura que se vean */
+
+/* --- Evita overflow sin ocultar las flores --- */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* fuerza sin scroll */
+  /* el body ya tenía overflow:hidden; lo mantenemos */
 }
 
-/* Usa dv* (dynamic viewport) cuando está disponible */
-@supports (height: 100dvh) {
-  body { min-height: 100dvh; }
-  /* Todo lo “a pantalla completa” debe usar dvh/dvw */
-  .night { position: fixed; inset: 0; }
+/* --- #stars a ancho/alto exacto de viewport y sin centrado por translate --- */
+@supports (height: 100svh) {
   #stars {
     position: fixed;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 100dvw;
-    height: 100dvh;
-  }
-}
-
-/* Fallback para navegadores sin dvh/dvw */
-@supports not (height: 100dvh) {
-  body { min-height: 100svh; }  /* small viewport: mejor que 100vh */
-  .night { position: fixed; inset: 0; }
-  #stars {
-    position: fixed;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 100svw;   /* evita sumar el ancho de la barra de scroll */
+    top: 0;
+    left: 0;              /* <- en vez de left:50% */
+    transform: none;      /* <- quitamos translateX(-50%) */
+    width: 100svw;        /* <- no suma barra de scroll */
     height: 100svh;
   }
 }
-
-/* ==== FIX 2: Limar cualquier “rebalse” lateral en móvil ==== */
-@media (max-width: 600px) {
-  /* Un pelín menos de escala para que nada toque bordes */
-  :root { --flowers-scale: 0.44; } /* ajusta 0.40–0.50 a gusto */
-  
-  /* Si algo empuja hacia abajo, subimos un poco el “piso” */
-  .flower { bottom: 8vmin; }            /* antes 10vmin */
-  .flower__grass { bottom: 10vmin; }    /* antes 12vmin */
-  
-  /* Seguridad extra: cualquier contenedor principal… */
-  .flowers {
-    max-width: 100dvw;
-    overflow: clip; /* recorta sin generar scroll */
-  }
-
-  /* Evita que el botón de audio cree scroll por sombras o hitbox */
-  #toggleAudio {
-    contain: layout paint; /* aísla su área de pintura */
-    will-change: transform; /* suaviza animación si la agregas */
+@supports not (height: 100svh) {
+  /* fallback razonable si no hay svh/svw */
+  #stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: 100vh;
   }
 }
 
-/* ==== FIX 3: micro-ajustes que suelen causar barras ==== */
-/* Filtros/sombras muy grandes pueden pintar fuera del viewport,
-   el “clip” minimiza repintes costosos */
-.night, #stars { overflow: clip; }
+/* --- La capa del fondo también fija, a pantalla completa y detrás --- */
+.night {
+  position: fixed;
+  inset: 0;
+  overflow: hidden; /* o clip si prefieres, pero no toca a .flowers */
+}
 
-/* En algunos navegadores, 100vw incluye la barra → esta técnica evita 0.5–1px de overflow */
-body { width: 100%; }
+/* --- Ajuste móvil: un poquito menos de escala para evitar roces con bordes --- */
+@media (max-width: 600px) {
+  :root { --flowers-scale: 0.48; } /* prueba 0.44–0.52 si hace falta */
+
+  /* Por si algo empuja hacia afuera en vertical */
+  html { overflow-x: clip; } /* evita barra horizontal sin esconder contenido */
+}
+
+/* Seguridad extra: no cortar las flores por accidente */
+.flowers { overflow: visible; }
+
 
 
 /*# sourceMappingURL=flowers.css.map */
