@@ -1106,60 +1106,30 @@ body {
   animation-play-state: paused !important;
 }
 
-/* --- Restablece capas: fondo detrás, flores delante --- */
-.night { z-index: 0; }
-#stars { z-index: 1; }
-.flowers { position: relative; z-index: 2; } /* asegura que se vean */
+/* Ajustes SOLO para pantallas angostas (ej: celulares) */
+@media (max-width: 600px) {
+  /* Reduce un poco la escala general de las flores */
+  :root {
+    --flowers-scale: 0.45; /* prueba entre 0.40 y 0.50 */
+  }
 
-/* --- Evita overflow sin ocultar las flores --- */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  /* el body ya tenía overflow:hidden; lo mantenemos */
-}
+  /* Ajusta el “suelo” de las flores y el pasto */
+  .flower { bottom: 6vmin; }
+  .flower__grass { bottom: 8vmin; }
 
-/* --- #stars a ancho/alto exacto de viewport y sin centrado por translate --- */
-@supports (height: 100svh) {
+  /* Evita barras horizontales en móvil */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Si las estrellas siguen desbordando, limítalas al viewport */
   #stars {
-    position: fixed;
-    top: 0;
-    left: 0;              /* <- en vez de left:50% */
-    transform: none;      /* <- quitamos translateX(-50%) */
-    width: 100svw;        /* <- no suma barra de scroll */
+    left: 0;
+    transform: none;
+    width: 100svw;
     height: 100svh;
   }
 }
-@supports not (height: 100svh) {
-  /* fallback razonable si no hay svh/svw */
-  #stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: none;
-    width: 100vw;
-    height: 100vh;
-  }
-}
-
-/* --- La capa del fondo también fija, a pantalla completa y detrás --- */
-.night {
-  position: fixed;
-  inset: 0;
-  overflow: hidden; /* o clip si prefieres, pero no toca a .flowers */
-}
-
-/* --- Ajuste móvil: un poquito menos de escala para evitar roces con bordes --- */
-@media (max-width: 600px) {
-  :root { --flowers-scale: 0.48; } /* prueba 0.44–0.52 si hace falta */
-
-  /* Por si algo empuja hacia afuera en vertical */
-  html { overflow-x: clip; } /* evita barra horizontal sin esconder contenido */
-}
-
-/* Seguridad extra: no cortar las flores por accidente */
-.flowers { overflow: visible; }
-
 
 
 /*# sourceMappingURL=flowers.css.map */
