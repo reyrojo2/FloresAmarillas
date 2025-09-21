@@ -2,7 +2,6 @@
 
 Este repositorio contiene una pequeña creación con **HTML + CSS + JS** para sorprender a alguien especial. 
 Las flores, el cielo y el mensaje se pueden personalizar fácilmente para adaptarlo a tu estilo.
-
 Preview: https://floresamarillas-bda.pages.dev/
 (Esto fue dedicado a mi **amada**, ¡ustedes mismos hagan el despliegue y/o modificación!)
 ---
