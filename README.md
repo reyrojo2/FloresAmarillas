@@ -18,7 +18,7 @@ El objetivo es que lo adaptes a tu gusto y a la persona a quien quieras dedicarl
 ## 🌼 Créditos
 - Las imágenes de la flor provienen de  
   [Amarillo iconos creados por Vectors Tank - Flaticon](https://www.flaticon.es/iconos-gratis/amarillo).
-- El CSS base fue modificado a partir del trabajo de otro autor ([créditos correspondientes](https://codepen.io/mdusmanansari/pen/BamepLe)).
+- El CSS base fue modificado a partir del trabajo de otro autor ([CSS Blossoming Flowers at Magical Night](https://codepen.io/mdusmanansari/pen/BamepLe)).
 - Las estrellas fugaces y estrellas individuales son creación mía.
 
 ---
