@@ -42,6 +42,8 @@ Recomiendo desplegarlo usando **[Cloudflare Pages](https://pages.cloudflare.com/
 ¡Toda contribución es bienvenida!
 - Recuerda darle cariño al repositorio y mencionar dónde lo viste.
 
+---
+
 ## 🛜 Preview: 
 https://floresamarillas-bda.pages.dev/
 - Esto fue dedicado a mi **amada**, ¡ustedes mismos hagan el despliegue y/o modificación!
