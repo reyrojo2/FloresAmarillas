@@ -25,7 +25,7 @@ El objetivo es que lo adaptes a tu gusto y a la persona a quien quieras dedicarl
 
 ## 🎁 Uso libre
 El repositorio es libre para cualquier **soldado** que quiera dar una sorpresa a su amada el **21-09**,  
-para que no sean solo espectadores, sino protagonistas de un detalle bonito. 💐
+para que no sean solo espectadoras, sino protagonistas de un detalle bonito. 💐
 
 ---
 
