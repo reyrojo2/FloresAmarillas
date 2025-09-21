@@ -6,6 +6,22 @@
     <title>Flores para una hermosa <3</title>
     <link rel="stylesheet" href="flowers.css">
 </head>
+    <script>
+  function setViewportUnits() {
+    // alto visible real (preferir VisualViewport si existe)
+    const h = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+    const w = (window.visualViewport ? window.visualViewport.width  : window.innerWidth);
+    document.documentElement.style.setProperty('--vvh', (h * 0.01) + 'px'); // 1% de alto visible
+    document.documentElement.style.setProperty('--vvw', (w * 0.01) + 'px'); // 1% de ancho visible
+  }
+  setViewportUnits();
+  window.addEventListener('resize', setViewportUnits);
+  window.addEventListener('orientationchange', setViewportUnits);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', setViewportUnits);
+    window.visualViewport.addEventListener('scroll', setViewportUnits); // barra aparece/desaparece
+  }
+</script>
 <body class="not-loaded">
   <div class="night"></div>
   <div id="stars"></div>
