@@ -1106,26 +1106,21 @@ body {
   animation-play-state: paused !important;
 }
 
-/* === Capas y clics: aseguro orden y que nada tape el botón === */
-.night { z-index: 0; pointer-events: none; }
-#stars { z-index: 1; pointer-events: none; }
-.flowers { position: relative; z-index: 2; overflow: visible; }
-#toggleAudio { z-index: 9999; pointer-events: auto; }
-/* ====== GLOBAL: usa viewport visual real (evita empujes por barra) ====== */
-.night { position: fixed; inset: 0; }
-#stars  { position: fixed; top: 0; left: 0; transform: none; }
-
-@supports (height: 100dvh) {
-  #stars { width: 100dvw; height: 100dvh; }
-  .night { width: 100dvw; height: 100dvh; }
+/* ====== usar SIEMPRE el alto/ancho visible reales ====== */
+:root {
+  --flowers-scale: 0.48;            /* ajústalo si hace falta */
+  --vh: 1vh; --vw: 1vw;             /* fallback */
+}
+.night, #stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: calc(var(--vvw, var(--vw)) * 100);
+  height: calc(var(--vvh, var(--vh)) * 100);
+  transform: none;
+  inset: unset;
 }
 
-@supports not (height: 100dvh) {
-  #stars { width: 100svw; height: 100svh; }
-  .night { width: 100svw; height: 100svh; }
-}
-
-/* mantener el botón sobre la safe-area en general */
+/* Botón fuera de la zona de la barra inferior */
 #toggleAudio {
   position: fixed;
   right: 20px;
@@ -1133,63 +1128,44 @@ body {
   z-index: 9999;
 }
 
-/* =========================
-   SOLO MÓVIL (<= 600px)
-   ========================= */
+/* Ajustes móviles (domar overflow sin cortar contenido) */
 @media (max-width: 600px) {
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    -webkit-text-size-adjust: 100%;
-  }
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
 
-  /* ya están fijos y dimensionados arriba; aquí no repetimos transform */
-  #stars { transform: none; }
-
-  :root { --flowers-scale: 0.48; }     /* ajusta 0.44–0.52 si hace falta */
+  /* Piso un poco más alto y escala ligera para evitar cortes */
   .flower { bottom: 8vmin; }
   .flower__grass { bottom: 10vmin; }
   .long-g--6 { bottom: -18vmin; }
 
-  /* botón visible sobre safe-area (sin duplicar reglas) */
-  #toggleAudio { contain: layout paint; }
-
-  /* Evitar desborde vertical de animaciones */
+  /* Animaciones limitadas al viewport visible real */
   .shooting-star {
-    top: -8svh;      /* antes -10vh */
-    --dist: 100svh;  /* antes 120vh */
+    top: calc(var(--vvh, var(--vh)) * -0.08); /* ~-8vh real */
+    --dist: calc(var(--vvh, var(--vh)) * 100);
   }
-
   @keyframes fall {
-    from { transform: translateY(0); opacity: .9; }
-    to   { transform: translateY(100svh); opacity: 0; }
+    from { transform: translateY(0);     opacity: .9; }
+    to   { transform: translateY(calc(var(--vvh, var(--vh)) * 100)); opacity: 0; }
   }
-
   @keyframes shoot {
-    0%   { transform: rotate(var(--angle)) translateY(-8svh); opacity: 0; }
+    0%   { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * -0.08)); opacity: 0; }
     10%  { opacity: 1; }
-    25%  { transform: rotate(var(--angle)) translateY(calc(100svh * .25)) translateX(calc(var(--drift) * 8px)); }
-    50%  { transform: rotate(var(--angle)) translateY(calc(100svh * .5))  translateX(calc(var(--drift) * -4px)); }
-    75%  { transform: rotate(var(--angle)) translateY(calc(100svh * .75)) translateX(calc(var(--drift) * 12px)); }
-    100% { transform: rotate(var(--angle)) translateY(100svh); opacity: 0; }
+    25%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 25)); }
+    50%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 50)); }
+    75%  { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 75)); }
+    100% { transform: rotate(var(--angle)) translateY(calc(var(--vvh, var(--vh)) * 100)); opacity: 0; }
   }
 
-  html { overflow-x: clip; } /* micro-scroll horizontal */
+  /* micro-scroll horizontal en algunos Android */
+  html { overflow-x: clip; }
 }
 
-/* =========================
-   MUY ANGOSTO (<= 400px)
-   ========================= */
+/* muy angosto */
 @media (max-width: 400px) {
   :root { --flowers-scale: 0.44; }
   .flower { bottom: 7vmin; }
   .flower__grass { bottom: 9vmin; }
   #toggleAudio { bottom: calc(24px + env(safe-area-inset-bottom)); }
 }
-
-
 
 
 /*# sourceMappingURL=flowers.css.map */
