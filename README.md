@@ -38,6 +38,6 @@ Recomiendo desplegarlo usando **[Cloudflare Pages](https://pages.cloudflare.com/
 ---
 
 ## ❤️ Contribuciones
-Puedes abrir un issue o un pull request si deseas proponer mejoras.  
+- Puedes abrir un issue o un pull request si deseas proponer mejoras.  
 ¡Toda contribución es bienvenida!
-Recuerda darle cariño al repositorio
+- Recuerda darle cariño al repositorio y mencionar dónde lo viste.
