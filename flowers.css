@@ -1111,13 +1111,18 @@ body {
   --flowers-scale: 0.48;            /* ajústalo si hace falta */
   --vh: 1vh; --vw: 1vw;             /* fallback */
 }
-.night, #stars {
+.night,
+#stars {
   position: fixed;
-  top: 0; left: 0;
-  width: calc(var(--vvw, var(--vw)) * 100);
-  height: calc(var(--vvh, var(--vh)) * 100);
+  top: var(--vvy, 0);
+  left: var(--vvx, 0);
+  width: calc(var(--vvw, 1vw) * 100);
+  height: calc(var(--vvh, 1vh) * 100);
   transform: none;
-  inset: unset;
+}
+
+.message {
+  padding-top: env(safe-area-inset-top);
 }
 
 /* Botón fuera de la zona de la barra inferior */
