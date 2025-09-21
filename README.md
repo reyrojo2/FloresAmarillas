@@ -2,8 +2,7 @@
 
 Este repositorio contiene una pequeña creación con **HTML + CSS + JS** para sorprender a alguien especial. 
 Las flores, el cielo y el mensaje se pueden personalizar fácilmente para adaptarlo a tu estilo.
-Preview: https://floresamarillas-bda.pages.dev/
-(Esto fue dedicado a mi **amada**, ¡ustedes mismos hagan el despliegue y/o modificación!)
+
 ---
 
 ## ✨ Personalización
@@ -42,3 +41,7 @@ Recomiendo desplegarlo usando **[Cloudflare Pages](https://pages.cloudflare.com/
 - Puedes abrir un issue o un pull request si deseas proponer mejoras.  
 ¡Toda contribución es bienvenida!
 - Recuerda darle cariño al repositorio y mencionar dónde lo viste.
+
+## 🛜 Preview: 
+https://floresamarillas-bda.pages.dev/
+- Esto fue dedicado a mi **amada**, ¡ustedes mismos hagan el despliegue y/o modificación!
