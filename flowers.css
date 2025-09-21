@@ -1106,28 +1106,33 @@ body {
   animation-play-state: paused !important;
 }
 
-/* Ajustes SOLO para pantallas angostas (ej: celulares) */
+/* Ajustes móviles: evitar desborde vertical */
 @media (max-width: 600px) {
-  /* Reduce un poco la escala general de las flores */
-  :root {
-    --flowers-scale: 0.45; /* prueba entre 0.40 y 0.50 */
-  }
-
-  /* Ajusta el “suelo” de las flores y el pasto */
-  .flower { bottom: 6vmin; }
-  .flower__grass { bottom: 8vmin; }
-
-  /* Evita barras horizontales en móvil */
   html, body {
-    overflow-x: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;      /* quita scroll vertical y horizontal */
   }
 
-  /* Si las estrellas siguen desbordando, limítalas al viewport */
-  #stars {
+  /* Limita el fondo y las estrellas al viewport visual */
+  #stars, .night {
+    top: 0;
     left: 0;
-    transform: none;
-    width: 100svw;
+    width: 100svw;   /* usa small viewport units (soporta barras en móviles) */
     height: 100svh;
+    transform: none;
+  }
+
+  /* Si alguna animación usa más de 100vh, recórtala a 100svh */
+  @keyframes fall {
+    from { transform: translateY(0); opacity: .9; }
+    to   { transform: translateY(100svh); opacity: 0; } /* antes 120vh */
+  }
+
+  @keyframes shoot {
+    0%   { transform: rotate(var(--angle)) translateY(-10svh); opacity: 0; }
+    100% { transform: rotate(var(--angle)) translateY(100svh); opacity: 0; }
   }
 }
 
